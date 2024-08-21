@@ -232,7 +232,7 @@ async def handle_Custom_group_message(websocket, msg):
         role = str(msg.get("sender", {}).get("role"))
         message_id = str(msg.get("message_id"))
         if user_id in owner_id:
-            random_emoji_id = random.sample(emoji_list, 1)
+            random_emoji_id = random.choice(emoji_list)
             await set_msg_emoji_like(websocket, message_id, random_emoji_id)
     except Exception as e:
         logging.error(
