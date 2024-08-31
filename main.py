@@ -268,10 +268,12 @@ async def handle_Custom_private_message(websocket, msg):
                 "不接受私聊消息，有事请联系开发者https://qm.qq.com/q/dJjlDIFJfM",
             )
         elif raw_message.startswith("cqimg"):
-            match = re.search(r'cqimg(.*?)"', raw_message)
+            match = re.match(r"cqimg(.*)", raw_message)
             if match:
                 img_url = match.group(1)
-                await send_private_msg(websocket, user_id, f"[CQ:image,file={img_url}]")
+                await send_private_msg_no_cq(
+                    websocket, user_id, f"[CQ:image,file={img_url}]"
+                )
     except Exception as e:
-        logging.error(f"处理xxx私聊消息失败: {e}")
+        logging.error(f"处理Custom私聊消息失败: {e}")
         return
