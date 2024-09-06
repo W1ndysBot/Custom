@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 import re
+import random
 
 # 添加项目根目录到sys.path
 sys.path.append(
@@ -230,9 +231,10 @@ async def handle_Custom_group_message(websocket, msg):
         raw_message = str(msg.get("raw_message"))
         role = str(msg.get("sender", {}).get("role"))
         message_id = str(msg.get("message_id"))
-        # if user_id in owner_id:
-        #     random_emoji_id = random.choice(emoji_list)
-        #     await set_msg_emoji_like(websocket, message_id, random_emoji_id)
+        # if user_id in ["2590816647"]:
+        #     for _ in range(20):
+        #         random_emoji_id = random.choice(emoji_list)
+        #         await set_msg_emoji_like(websocket, message_id, random_emoji_id)
     except Exception as e:
         logging.error(
             f"处理Custom群消息失败: {e}"
