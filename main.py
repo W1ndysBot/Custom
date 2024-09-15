@@ -263,13 +263,13 @@ async def handle_Custom_private_message(websocket, msg):
     try:
         user_id = str(msg.get("user_id"))
         raw_message = str(msg.get("raw_message"))
-        if user_id not in owner_id:
-            await send_private_msg(
-                websocket,
-                user_id,
-                "不接受私聊消息，有事请联系开发者https://qm.qq.com/q/dJjlDIFJfM",
-            )
-        elif raw_message.startswith("cqimg"):
+        # if user_id not in owner_id:
+        #     await send_private_msg(
+        #         websocket,
+        #         user_id,
+        #         "不接受私聊消息，有事请联系开发者https://qm.qq.com/q/dJjlDIFJfM",
+        #     )
+        if raw_message.startswith("cqimg"):
             match = re.match(r"cqimg(.*)", raw_message)
             if match:
                 img_url = match.group(1)
