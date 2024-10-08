@@ -231,51 +231,22 @@ async def handle_Custom_group_message(websocket, msg):
         raw_message = str(msg.get("raw_message"))
         role = str(msg.get("sender", {}).get("role"))
         message_id = str(msg.get("message_id"))
-        # if user_id in ["2590816647"]:
-        #     for _ in range(20):
-        #         random_emoji_id = random.choice(emoji_list)
-        #         await set_msg_emoji_like(websocket, message_id, random_emoji_id)
-    except Exception as e:
-        logging.error(
-            f"处理Custom群消息失败: {e}"
-        )  # 注意：Custom 是具体功能，请根据实际情况修改
-        return
 
+        # 仅root管理员可以使用
+        if user_id not in owner_id:
+            return
 
-# 群通知处理函数
-async def handle_Custom_group_notice(websocket, msg):
-    try:
-        user_id = str(msg.get("user_id"))
-        group_id = str(msg.get("group_id"))
-        raw_message = str(msg.get("raw_message"))
-        role = str(msg.get("sender", {}).get("role"))
-        message_id = str(msg.get("message_id"))
-
-    except Exception as e:
-        logging.error(
-            f"处理Custom群通知失败: {e}"
-        )  # 注意：Custom 是具体功能，请根据实际情况修改
-        return
-
-
-# 私聊消息处理函数
-async def handle_Custom_private_message(websocket, msg):
-    try:
-        user_id = str(msg.get("user_id"))
-        raw_message = str(msg.get("raw_message"))
-        # if user_id not in owner_id:
-        #     await send_private_msg(
-        #         websocket,
-        #         user_id,
-        #         "不接受私聊消息，有事请联系开发者https://qm.qq.com/q/dJjlDIFJfM",
-        #     )
+        # 发送图片
         if raw_message.startswith("cqimg"):
             match = re.match(r"cqimg(.*)", raw_message)
             if match:
                 img_url = match.group(1)
-                await send_private_msg_no_cq(
-                    websocket, user_id, f"[CQ:image,file={img_url}]"
+                await send_group_msg_no_cq(
+                    websocket, group_id, f"[CQ:image,file={img_url}]"
                 )
+
     except Exception as e:
-        logging.error(f"处理Custom私聊消息失败: {e}")
+        logging.error(
+            f"处理Custom群消息失败: {e}"
+        )  # 注意：Custom 是具体功能，请根据实际情况修改
         return
