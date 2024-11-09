@@ -245,6 +245,13 @@ async def handle_Custom_group_message(websocket, msg):
                     websocket, group_id, f"[CQ:image,file={img_url}]"
                 )
 
+        # 退群
+        if raw_message.startswith("退群") or raw_message.startswith("quit"):
+            match = re.search(r"\d+", raw_message)
+            if match:
+                group_id = match.group(0)
+                await set_group_leave(websocket, group_id, True)
+
     except Exception as e:
         logging.error(
             f"处理Custom群消息失败: {e}"
