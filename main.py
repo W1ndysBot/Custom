@@ -11,7 +11,7 @@ sys.path.append(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from app.config import owner_id
+from app.config import owner_id, report_group_id
 from app.api import *
 from app.switch import load_switch, save_switch
 
@@ -236,6 +236,10 @@ async def handle_Custom_group_message(websocket, msg):
         if user_id not in owner_id:
             return
 
+        # 仅在指定群组中有效
+        # if group_id not in report_group_id:
+        #     return
+
         # 发送图片
         if raw_message.startswith("cqimg"):
             match = re.match(r"cqimg(.*)", raw_message)
@@ -251,6 +255,9 @@ async def handle_Custom_group_message(websocket, msg):
             if match:
                 group_id = match.group(0)
                 await set_group_leave(websocket, group_id, True)
+                await send_group_msg(
+                    websocket, report_group_id, f"已退出群聊【{group_id}】"
+                )
 
     except Exception as e:
         logging.error(
