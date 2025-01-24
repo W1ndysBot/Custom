@@ -11,7 +11,7 @@ sys.path.append(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from app.config import owner_id, report_group_id
+from app.config import owner_id, report_group_ids
 from app.api import *
 from app.switch import load_switch, save_switch
 
@@ -255,9 +255,10 @@ async def handle_Custom_group_message(websocket, msg):
             if match:
                 group_id = match.group(0)
                 await set_group_leave(websocket, group_id, True)
-                await send_group_msg(
-                    websocket, report_group_id, f"已退出群聊【{group_id}】"
-                )
+                for group_id in report_group_ids:
+                    await send_group_msg(
+                        websocket, group_id, f"已退出群聊【{group_id}】"
+                    )
 
     except Exception as e:
         logging.error(
